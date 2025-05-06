@@ -25,7 +25,7 @@ if(a.mode=="CVAT-VSM"):
     
 if(os.path.isdir(save_to)==False):
     os.makedirs(save_to)
-        print("Created folder "+save_to)
+    print("Created folder "+save_to)
 
 
 #Check the name of the product in the folder
