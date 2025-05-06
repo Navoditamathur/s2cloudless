@@ -12,16 +12,19 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--input", required=True, help="path to the folder where the jp2 files of the L1C product are located (IMG_DATA)")
+parser.add_argument("--output", required=True, help="path to the folder where the jp2 files of the L1C product are located (IMG_DATA)")
+
 parser.add_argument("--mode", required=True,  choices=["validation", "CVAT-VSM"], help="validation: output images rescaled to 10980x10980px, mask output with pixel values 0 or 255, probability output with colormap. CVAT-VSM: output image dimensions 1830x1830px, mask output with pixel values 0 or 1, probabilty output as greyscaled.")
 a = parser.parse_args()
 
 input_folder=a.input
-save_to=""
+save_to=a.output
 
 if(a.mode=="CVAT-VSM"):
     save_to=input_folder.replace("IMG_DATA","S2CLOUDLESS_DATA")
-    if(os.path.isdir(save_to)==False):
-        os.makedirs(save_to)
+    
+if(os.path.isdir(save_to)==False):
+    os.makedirs(save_to)
         print("Created folder "+save_to)
 
 
@@ -106,5 +109,8 @@ cloud_detector = S2PixelCloudDetector(threshold=0.4, average_over=22, dilation_s
 cloud_probs = cloud_detector.get_cloud_probability_maps(bands)
 mask = cloud_detector.get_cloud_masks(bands).astype(rasterio.uint8)
 
-plot_cloud_mask(mask[0])
-plot_probability_map(cloud_probs[0])
+cloud_mask_path = os.path.join(save_to, '_cloud_mask.tif')
+cloud_prob_path = os.path.join(save_to, '_cloud_prob.tif')
+
+cv2.imwrite(cloud_mask_path, mask[0])  
+cv2.imwrite(cloud_prob_path, loud_probs[0])
