@@ -84,6 +84,7 @@ def read_band(path, scale=1, bounds=None):
                     int(window.width * scale)
                 ),
                 resampling=Resampling.bilinear
+            )
         return data
 
 B01_path = os.path.join(input_folder,identifier+"B01.jp2")
