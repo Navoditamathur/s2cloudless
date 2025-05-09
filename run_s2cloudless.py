@@ -80,8 +80,8 @@ def read_band(path, scale=1, bounds=None):
             data = dataset.read(
                 out_shape=(
                     dataset.count,
-                    int(window.height * scale),
-                    int(window.width * scale)
+                    int(dataset.height * scale),
+                    int(dataset.width * scale)
                 ),
                 resampling=Resampling.bilinear
             )
