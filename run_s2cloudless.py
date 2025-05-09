@@ -13,12 +13,17 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("--input", required=True, help="path to the folder where the jp2 files of the L1C product are located (IMG_DATA)")
 parser.add_argument("--output", required=True, help="path to the folder where thecloud masks are to be save are to be saved ")
-
 parser.add_argument("--mode", required=True,  choices=["validation", "CVAT-VSM"], help="validation: output images rescaled to 10980x10980px, mask output with pixel values 0 or 255, probability output with colormap. CVAT-VSM: output image dimensions 1830x1830px, mask output with pixel values 0 or 1, probabilty output as greyscaled.")
+parser.add_argument("--bounds", required=False,  help="Bounds to crop mask to")
+
 a = parser.parse_args()
 
 input_folder=a.input
 save_to=a.output
+if a.bounds:
+    bounds=a.bounds
+else:
+    bounds=None
 
 if(a.mode=="CVAT-VSM"):
     save_to=input_folder.replace("IMG_DATA","S2CLOUDLESS_DATA")
@@ -58,46 +63,68 @@ def plot_probability_map(prob_map, figsize=(15, 15)):
         im_result.save(os.path.join(save_to,"s2cloudless_probability.png"))       
 
 #Resampling to achieve 10 m resolution:
+def read_band(path, scale=1, bounds=None):
+    with rasterio.open(path) as dataset:
+        if bounds:
+            window = from_bounds(*bounds, transform=dataset.transform)
+            data = dataset.read(
+                out_shape=(
+                    dataset.count,
+                    int(window.height * scale),
+                    int(window.width * scale)
+                ),
+                window=window,
+                resampling=Resampling.bilinear
+            )
+        else:
+            data = dataset.read(
+                out_shape=(
+                    dataset.count,
+                    int(window.height * scale),
+                    int(window.width * scale)
+                ),
+                resampling=Resampling.bilinear
+        return data
 
-with rasterio.open(os.path.join(input_folder,identifier+"B01.jp2")) as dataset:
-    B01 = dataset.read(out_shape=(dataset.count,int(dataset.height * 6),int(dataset.width * 6)),resampling=Resampling.bilinear)                  
-    print(B01.shape)
+B01_path = os.path.join(input_folder,identifier+"B01.jp2"))
+B01 = read_band(B01_path, 6, bounds)
+print(B01.shape)
 
-with rasterio.open(os.path.join(input_folder,identifier+"B02.jp2")) as dataset:
-    B02 = dataset.read(out_shape=(dataset.count,int(dataset.height * 1),int(dataset.width * 1)),resampling=Resampling.bilinear)
-    print(B02.shape)
-    
-with rasterio.open(os.path.join(input_folder,identifier+"B04.jp2")) as dataset:
-    B04 = dataset.read(out_shape=(dataset.count,int(dataset.height * 1),int(dataset.width * 1)),resampling=Resampling.bilinear)
-    print(B04.shape)
-    
-with rasterio.open(os.path.join(input_folder,identifier+"B05.jp2")) as dataset:
-    B05 = dataset.read(out_shape=(dataset.count,int(dataset.height * 2),int(dataset.width * 2)),resampling=Resampling.bilinear)
-    print(B05.shape)
-    
-with rasterio.open(os.path.join(input_folder,identifier+"B08.jp2")) as dataset:
-    B08 = dataset.read(out_shape=(dataset.count,int(dataset.height * 1),int(dataset.width * 1)),resampling=Resampling.bilinear)
-    print(B08.shape)
-    
-with rasterio.open(os.path.join(input_folder,identifier+"B8A.jp2")) as dataset:
-    B8A = dataset.read(out_shape=(dataset.count,int(dataset.height * 2),int(dataset.width * 2)),resampling=Resampling.bilinear)
-    print(B8A.shape)
-    
-with rasterio.open(os.path.join(input_folder,identifier+"B09.jp2")) as dataset:
-    B09 = dataset.read(out_shape=(dataset.count,int(dataset.height * 6),int(dataset.width * 6)),resampling=Resampling.bilinear)
-    print(B09.shape)
-    
-with rasterio.open(os.path.join(input_folder,identifier+"B10.jp2")) as dataset:
-    B10 = dataset.read(out_shape=(dataset.count,int(dataset.height * 6),int(dataset.width * 6)),resampling=Resampling.bilinear)
-    print(B10.shape)
-    
-with rasterio.open(os.path.join(input_folder,identifier+"B11.jp2")) as dataset:
-    B11 = dataset.read(out_shape=(dataset.count,int(dataset.height * 2),int(dataset.width * 2)),resampling=Resampling.bilinear)
-    print(B11.shape)
-    
-with rasterio.open(os.path.join(input_folder,identifier+"B12.jp2")) as dataset:
-    B12 = dataset.read(out_shape=(dataset.count,int(dataset.height * 2),int(dataset.width * 2)),resampling=Resampling.bilinear)
-    print(B12.shape)
+B02_path = os.path.join(input_folder,identifier+"B02.jp2"))
+B02 = read_band(B02_path, 1, bounds)
+print(B01.shape)
+
+B04_path = os.path.join(input_folder,identifier+"B04.jp2"))
+B04 = read_band(B04_path, 1, bounds)
+print(B04.shape)
+
+B05_path = os.path.join(input_folder,identifier+"B05.jp2"))
+B05 = read_band(B05_path, 2, bounds)
+print(B05.shape)
+
+B08_path = os.path.join(input_folder,identifier+"B08.jp2"))
+B08 = read_band(B08_path, 1, bounds)
+print(B08.shape)
+
+B8A_path = os.path.join(input_folder,identifier+"B8A.jp2"))
+B8A = read_band(B8A_path, 2, bounds)
+print(B8A.shape)
+
+B09_path = os.path.join(input_folder,identifier+"B09.jp2"))
+B09 = read_band(B09_path, 6, bounds)
+print(B00.shape)
+
+B10_path = os.path.join(input_folder,identifier+"B10.jp2"))
+B10 = read_band(B10_path, 6, bounds)
+print(B05.shape)
+
+B11_path = os.path.join(input_folder,identifier+"B11.jp2"))
+B11 = read_band(B11_path, 2, bounds)
+print(B05.shape)
+
+B12_path = os.path.join(input_folder,identifier+"B12.jp2"))
+B12 = read_band(B12_path, 2, bounds)
+print(B12.shape)
 
 bands = np.array([np.dstack((B01[0]/10000.0,B02[0]/10000.0,B04[0]/10000.0,B05[0]/10000.0,B08[0]/10000.0,B8A[0]/10000.0,B09[0]/10000.0,B10[0]/10000.0,B11[0]/10000.0,B12[0]/10000.0))])
 
