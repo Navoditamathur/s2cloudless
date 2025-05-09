@@ -86,43 +86,43 @@ def read_band(path, scale=1, bounds=None):
                 resampling=Resampling.bilinear
         return data
 
-B01_path = os.path.join(input_folder,identifier+"B01.jp2"))
+B01_path = os.path.join(input_folder,identifier+"B01.jp2")
 B01 = read_band(B01_path, 6, bounds)
 print(B01.shape)
 
-B02_path = os.path.join(input_folder,identifier+"B02.jp2"))
+B02_path = os.path.join(input_folder,identifier+"B02.jp2")
 B02 = read_band(B02_path, 1, bounds)
 print(B01.shape)
 
-B04_path = os.path.join(input_folder,identifier+"B04.jp2"))
+B04_path = os.path.join(input_folder,identifier+"B04.jp2")
 B04 = read_band(B04_path, 1, bounds)
 print(B04.shape)
 
-B05_path = os.path.join(input_folder,identifier+"B05.jp2"))
+B05_path = os.path.join(input_folder,identifier+"B05.jp2")
 B05 = read_band(B05_path, 2, bounds)
 print(B05.shape)
 
-B08_path = os.path.join(input_folder,identifier+"B08.jp2"))
+B08_path = os.path.join(input_folder,identifier+"B08.jp2")
 B08 = read_band(B08_path, 1, bounds)
 print(B08.shape)
 
-B8A_path = os.path.join(input_folder,identifier+"B8A.jp2"))
+B8A_path = os.path.join(input_folder,identifier+"B8A.jp2")
 B8A = read_band(B8A_path, 2, bounds)
 print(B8A.shape)
 
-B09_path = os.path.join(input_folder,identifier+"B09.jp2"))
+B09_path = os.path.join(input_folder,identifier+"B09.jp2")
 B09 = read_band(B09_path, 6, bounds)
 print(B00.shape)
 
-B10_path = os.path.join(input_folder,identifier+"B10.jp2"))
+B10_path = os.path.join(input_folder,identifier+"B10.jp2")
 B10 = read_band(B10_path, 6, bounds)
 print(B05.shape)
 
-B11_path = os.path.join(input_folder,identifier+"B11.jp2"))
+B11_path = os.path.join(input_folder,identifier+"B11.jp2")
 B11 = read_band(B11_path, 2, bounds)
 print(B05.shape)
 
-B12_path = os.path.join(input_folder,identifier+"B12.jp2"))
+B12_path = os.path.join(input_folder,identifier+"B12.jp2")
 B12 = read_band(B12_path, 2, bounds)
 print(B12.shape)
 
