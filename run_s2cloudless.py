@@ -129,6 +129,8 @@ print(B12.shape, flush=True)
 
 bands = np.array([np.dstack((B01[0]/10000.0,B02[0]/10000.0,B04[0]/10000.0,B05[0]/10000.0,B08[0]/10000.0,B8A[0]/10000.0,B09[0]/10000.0,B10[0]/10000.0,B11[0]/10000.0,B12[0]/10000.0))])
 
+print(bands.shape)#(N, height, width, 10)
+
 #Recommended parameters for 60 m resolution: average_over = 4, dilation_size=2
 #Recommended parameters for 10 m resolution: average_over=22, dilation_size=11
 #The actual best result is achievable by trying different values for different products.
