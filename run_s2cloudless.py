@@ -93,7 +93,11 @@ print(B01.shape, flush=True)
 
 B02_path = os.path.join(input_folder,identifier+"B02.jp2")
 B02 = read_band(B02_path, 1, bounds)
-print(B01.shape, flush=True)
+print(B03.shape, flush=True)
+
+B03_path = os.path.join(input_folder,identifier+"B03.jp2")
+B03 = read_band(B03_path, 1, bounds)
+print(B03.shape, flush=True)
 
 B04_path = os.path.join(input_folder,identifier+"B04.jp2")
 B04 = read_band(B04_path, 1, bounds)
@@ -101,6 +105,14 @@ print(B04.shape, flush=True)
 
 B05_path = os.path.join(input_folder,identifier+"B05.jp2")
 B05 = read_band(B05_path, 2, bounds)
+print(B05.shape, flush=True)
+
+B06_path = os.path.join(input_folder,identifier+"B06.jp2")
+B06 = read_band(B06_path, 2, bounds)
+print(B06.shape, flush=True)
+
+B07_path = os.path.join(input_folder,identifier+"B07.jp2")
+B07 = read_band(B08_path, 2, bounds)
 print(B05.shape, flush=True)
 
 B08_path = os.path.join(input_folder,identifier+"B08.jp2")
@@ -127,7 +139,7 @@ B12_path = os.path.join(input_folder,identifier+"B12.jp2")
 B12 = read_band(B12_path, 2, bounds)
 print(B12.shape, flush=True)
 
-bands = np.array([np.dstack((B01[0]/10000.0,B02[0]/10000.0,B04[0]/10000.0,B05[0]/10000.0,B08[0]/10000.0,B8A[0]/10000.0,B09[0]/10000.0,B10[0]/10000.0,B11[0]/10000.0,B12[0]/10000.0))])
+bands = np.array([np.dstack((B01[0]/10000.0,B02[0]/10000.0,B03[0]/10000.0, B04[0]/10000.0,B05[0]/10000.0,B06[0]/10000.0, B07[0]/10000.0, B08[0]/10000.0,B8A[0]/10000.0,B09[0]/10000.0,B10[0]/10000.0,B11[0]/10000.0,B12[0]/10000.0))])
 
 print(bands.shape)#(N, height, width, 10)
 
@@ -135,7 +147,7 @@ print(bands.shape)#(N, height, width, 10)
 #Recommended parameters for 10 m resolution: average_over=22, dilation_size=11
 #The actual best result is achievable by trying different values for different products.
 
-cloud_detector = S2PixelCloudDetector(threshold=0.4, average_over=4, dilation_size=2)  
+cloud_detector = S2PixelCloudDetector(threshold=0.4, average_over=4, dilation_size=2, full_bands=True)  
 cloud_probs = cloud_detector.get_cloud_probability_maps(bands)
 mask = cloud_detector.get_cloud_masks(bands).astype(rasterio.uint8)
 
