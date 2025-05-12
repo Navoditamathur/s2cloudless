@@ -112,8 +112,8 @@ B06 = read_band(B06_path, 2, bounds)
 print(B06.shape, flush=True)
 
 B07_path = os.path.join(input_folder,identifier+"B07.jp2")
-B07 = read_band(B08_path, 2, bounds)
-print(B05.shape, flush=True)
+B07 = read_band(B07_path, 2, bounds)
+print(B07.shape, flush=True)
 
 B08_path = os.path.join(input_folder,identifier+"B08.jp2")
 B08 = read_band(B08_path, 1, bounds)
